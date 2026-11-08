@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sorteos Valery 🎫</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Georgia', serif;
+        }
+
+        body {
+            background: linear-gradient(180deg, #0A1A3F 0%, #162B5C 100%);
+            min-height: 100vh;
+            text-align: center;
+            padding: 20px;
+            color: #F2D898;
+        }
+
+        .logo-circulo {
+            width: 220px;
+            height: 220px;
+            border: 3px solid #F2D898;
+            border-radius: 50%;
+            margin: 0 auto 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .logo-circulo::before, .logo-circulo::after {
+            content: '★';
+            position: absolute;
+            color: #F2D898;
+            font-size: 16px;
+        }
+
+        .logo-circulo::before { top: 30px; left: 30px; }
+        .logo-circulo::after { top: 30px; right: 30px; }
+
+        .trébol {
+            font-size: 48px;
+            margin-bottom: 5px;
+        }
+
+        .logo-circulo h1 {
+            font-size: 42px;
+            font-weight: bold;
+            letter-spacing: 3px;
+        }
+
+        .logo-circulo span {
+            font-size: 22px;
+            letter-spacing: 8px;
+            text-transform: uppercase;
+        }
+
+        .subtitulo-superior {
+            font-size: 18px;
+            letter-spacing: 4px;
+            margin-bottom: 30px;
+            color: #E8C872;
+        }
+
+        /* Contador de Tiempo */
+        .contador-seccion {
+            max-width: 600px;
+            margin: 0 auto 40px;
+            padding: 30px;
+            border: 2px solid #F2D898;
+            border-radius: 12px;
+            background: rgba(10, 26, 63, 0.6);
+            box-shadow: 0 0 30px rgba(242, 216, 152, 0.15);
+        }
+
+        .contador-titulo {
+            font-size: 20px;
+            margin-bottom: 20px;
+            color: #E8C872;
+        }
+
+        .contador {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .contador-item {
+            background: rgba(212, 175, 55, 0.15);
+            border: 2px solid #D4AF37;
+            border-radius: 8px;
+            width: 90px;
+            padding: 15px 10px;
+        }
+
+        .contador-numero {
+            font-size: 36px;
+            font-weight: bold;
+            color: #F8E9B8;
+        }
+
+        .contador-etiqueta {
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #C8B896;
+        }
+
+        .mensaje-final {
+            font-size: 22px;
+            font-weight: bold;
+            color: #FFD700;
+            display: none;
+        }
+
+        .contenedor-cartón {
+            max-width: 700px;
+            margin: 0 auto 40px;
+            border: 2px solid #F2D898;
+            border-radius: 8px;
+            padding: 20px;
+            background: rgba(10, 26, 63, 0.6);
+            box-shadow: 0 0 30px rgba(242, 216, 152, 0.15);
+        }
+
+        .titulo-cartón {
+            font-size: 16px;
+            letter-spacing: 3px;
+            margin-bottom: 20px;
+            color: #E8C872;
+        }
+
+        .numeros-grid {
+            display: grid;
+            grid-template-columns: repeat(10, 1fr);
+            gap: 6px;
+            margin-bottom: 30px;
+        }
+
+        .numero {
+            border: 1px solid #F2D898;
+            padding: 8px 4px;
+            font-size: 18px;
+            font-weight: bold;
+            color: #F2D898;
+            border-radius: 4px;
+            transition: all 0.2s;
+        }
+
+        .numero:hover {
+            background: #F2D898;
+            color: #0A1A3F;
+        }
+
+        .campos-info {
+            border-top: 2px solid #F2D898;
+            padding-top: 25px;
+            text-align: left;
+        }
+
+        .campo {
+            font-size: 20px;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .campo label {
+            min-width: 140px;
+            font-weight: bold;
+        }
+
+        .linea {
+            flex: 1;
+            border-bottom: 1px solid #F2D898;
+            min-width: 150px;
+            height: 24px;
+        }
+
+        .contenedor-botones {
+            max-width: 700px;
+            margin: 0 auto 40px;
+        }
+
+        .boton {
+            display: inline-block;
+            background: linear-gradient(135deg, #D4AF37 0%, #B8860B 100%);
+            color: #0A1A3F;
+            padding: 14px 30px;
+            border-radius: 6px;
+            font-size: 17px;
+            text-decoration: none;
+            font-weight: bold;
+            margin: 8px;
+            border: 2px solid #F2D898;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .boton:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 20px rgba(212, 175, 55, 0.4);
+        }
+
+        .terminos {
+            max-width: 700px;
+            margin: 0 auto 50px;
+            border: 2px solid #F2D898;
+            border-radius: 8px;
+            padding: 30px;
+            background: rgba(10, 26, 63, 0.6);
+            text-align: left;
+        }
+
+        .terminos h2 {
+            text-align: center;
+            font-size: 22px;
+            margin-bottom: 25px;
+            color: #E8C872;
+        }
+
+        .terminos h3 {
+            font-size: 17px;
+            margin: 20px 0 10px;
+            color: #E8C872;
+        }
+
+        .terminos p, .terminos ul {
+            font-size: 15px;
+            line-height: 1.7;
+            color: #E0D4B8;
+            margin-bottom: 12px;
+        }
+
+        .terminos ul {
+            padding-left: 25px;
+        }
+
+        .terminos li {
+            margin-bottom: 8px;
+        }
+
+        .resaltado {
+            background: rgba(212, 175, 55, 0.15);
+            border-left: 3px solid #D4AF37;
+            padding: 12px 15px;
+            margin: 15px 0;
+            font-weight: bold;
+            color: #F8E9B8;
+        }
+
+        footer {
+            margin-top: 30px;
+            padding: 20px;
+            font-size: 15px;
+            color: #C8B896;
+        }
+
+        @media (max-width: 600px) {
+            .numeros-grid {
+                grid-template-columns: repeat(10, minmax(32px, 1fr));
+                gap: 3px;
+            }
+            .numero {
+                font-size: 13px;
+                padding: 6px 2px;
+            }
+            .campo {
+                font-size: 16px;
+            }
+            .logo-circulo {
+                width: 180px;
+                height: 180px;
+            }
+            .logo-circulo h1 {
+                font-size: 32px;
+            }
+            .contador-item {
+                width: 70px;
+                padding: 10px 5px;
+            }
+            .contador-numero {
+                font-size: 26px;
+            }
+            .terminos {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Logo Principal -->
+    <div class="logo-circulo">
+        <span class="trébol">🍀</span>
+        <span>sorteos</span>
+        <h1>Valery</h1>
+    </div>
+
+    <p class="subtitulo-superior">✨ ¡Tu suerte está aquí! ✨</p>
+
+    <!-- Contador de Tiempo -->
+    <div class="contador-seccion">
+        <h2 class="contador-titulo">⏰ Tiempo Restante para el Sorteo</h2>
+        <div id="contador" class="contador">
+            <div class="contador-item">
+                <div class="contador-numero" id="dias">00</div>
+                <div class="contador-etiqueta">Días</div>
+            </div>
+            <div class="contador-item">
+                <div class="contador-numero" id="horas">00</div>
+                <div class="contador-etiqueta">Horas</div>
+            </div>
+            <div class="contador-item">
+                <div class="contador-numero" id="minutos">00</div>
+                <div class="contador-etiqueta">Min</div>
+            </div>
+            <div class="contador-item">
+                <div class="contador-numero" id="segundos">00</div>
+                <div class="contador-etiqueta">Seg</div>
+            </div>
+        </div>
+        <div id="mensaje-final" class="mensaje-final">🎉 ¡El sorteo ha comenzado! 🎉</div>
+    </div>
+
+    <!-- Cartón Oficial -->
+    <div class="contenedor-cartón">
+        <p class="titulo-cartón">CARTÓN OFICIAL • 00 AL 99</p>
+
+        <div class="numeros-grid">
+            <div class="numero">00</div><div class="numero">01</div><div class="numero">02</div><div class="numero">03</div><div class="numero">04</div>
+            <div class="numero">05</div><div class="numero">06</div><div class="numero">07</div><div class="numero">08</div><div class="numero">09</div>
+            <div class="numero">10</div><div class="numero">11</div><div class="numero">12</div><div class="numero">13</div><div class="numero">14</div>
+            <div class="numero">15</div><div class="numero">16</div><div class="numero">17</div><div class="numero">18</div><div class="numero">19</div>
+            <div class="numero">20</div><div class="numero">21</div><div class="numero">22</div><div class="numero">23</div><div class="numero">24</div>
+            <div class="numero">25</div><div class="numero">26</div><div class="numero">27</div><div class="numero">28</div><div class="numero">29</div>
+            <div class="numero">30</div><div class="numero">31</div><div class="numero">32</div><div class="numero">33</div><div class="numero">34</div>
+            <div class="numero">35</div><div class="numero">36</div><div class="numero">37</div><div class="numero">38</div><div class="numero">39</div>
+            <div class="numero">40</div><div class="numero">41</div><div class="numero">42</div><div class="numero">43</div><div class="numero">44</div>
+            <div class="numero">45</div><div class="numero">46</div><div class="numero">47</div><div class="numero">48</div><div class="numero">49</div>
+            <div class="numero">50</div><div class="numero">51</div><div class="numero">52</div><div class="numero">53</div><div class="numero">54</div>
+            <div class="numero">55</div><div class="numero">56</div><div class="numero">57</div><div class="numero">58</div><div class="numero">59</div>
+            <div class="numero">60</div><div class="numero">61</div><div class="numero">62</div><div class="numero">63</div><div class="numero">64</div>
+            <div class="numero">65</div><div class="numero">66</div><div class="numero">67</div><div class="numero">68</div><div class="numero">69</div>
+            <div class="numero">70</div><div class="numero">71</div><div class="numero">72</div><div class="numero">73</div><div class="numero">74</div>
+            <div class="numero">75</div><div class="numero">76</div><div class="numero">77</div><div class="numero">78</div><div class="numero">79</div>
+            <div class="numero">80</div><div class="numero">81</div><div class="numero">82</div><div class="numero">83</div><div class="numero">84</div>
+            <div class="numero">85</div><div class="numero">86</div><div class="numero">87</div><div class="numero">88</div><div class="numero">89</div>
+            <div class="numero">90</div><div class="numero">91</div><div class="numero">92</div><div class="numero">93</div><div class="numero">94</div>
+            <div class="numero">95</div><div class="numero">96</div><div class="numero">97</div><div class="numero">98</div><div class="numero">99</div>
+        </div>
+
+        <div class="campos-info">
+            <div class="campo"><label>Nombre:</label><span class="linea"></span></div>
+            <div class="campo"><label>Fecha del sorteo:</label><span class="linea"></span></div>
+            <div class="campo"><label>Precio:</label><span class="linea"></span></div>
+            <div class="campo"><label>WhatsApp:</label><span style="color: #F8E9B8; font-weight: normal;">324 631 1517 • 318 070 1233</span></div>
+        </div>
+    </div>
+
+    <div class="contenedor-botones">
+        <a href="https://wa.me/573246311517" target="_blank" class="boton">📲 WhatsApp 1: 324 631 1517</a>
+        <a href="https://wa.me/573180701233" target="_blank" class="boton">📲 WhatsApp 2: 318 070 1233</a>
+        <a href="#" class="boton">🎁 Ver Premios</a>
+        <a href="#" class="boton">📅 Próximos Sorteos</a>
+    </div>
+
+    <div class="terminos">
+        <h2>📋 TÉRMINOS Y CONDICIONES</h2>
+
+        <h3>1. Participación</h3>
+        <p>La participación en los sorteos de <strong>Sorteos Valery</strong> implica la aceptación total de los presentes términos y condiciones.</p>
+
+        <h3>2. Reserva y Pago de Números</h3>
+        <ul>
+            <li>Los números se reservan a través de nuestros números de WhatsApp: <strong>324 631 1517</strong> y <strong>318 070 1233</strong>.</li>
+            <li>La reserva tiene validez por el tiempo acordado; si no se confirma el pago dentro de ese plazo, el número quedará disponible nuevamente para otra persona.</li>
+        </ul>
+
+        <div class="resaltado">
+            ⚠️ IMPORTANTE: El sorteo SOLO se realizará si TODOS los números vendidos han sido cancelados en su totalidad. Si al menos un número no ha sido pagado, el sorteo NO se llevará a cabo hasta que se complete el pago de todos los números participantes.
+        </div>
+
+        <h3>3. Realización del Sorteo</h3>
+        <ul>
+            <li>Una vez completado el pago de todos los números, se informará la fecha y hora exacta del sorteo.</li>
+            <li>El sorteo se transmitirá en vivo y de forma transparente.</li>
+            <li>El resultado será definitivo y se dará a conocer públicamente al finalizar.</li>
+        </ul>
+
+        <h3>4. Entrega del Premio</h3>
+        <p>El premio será entregado al ganador una vez verificado que el número está debidamente cancelado y registrado a su nombre.</p>
+
+        <h3>5. Modificaciones</h3>
+        <p>Sorteos Valery se reserva el derecho de modificar la fecha del sorteo o cancelarlo en caso de fuerza mayor, notificando previamente a todos los participantes.</p>
+    </div>
+
+    <footer>
+        <p>© 2026 Sorteos Valery — Todos los derechos reservados ❤️</p>
+        <p style="margin-top: 8px; font-size: 13px;">Santa Marta, Colombia 🇨🇴</p>
+    </footer>
+
+    <!-- Script del Contador -->
+    <script>
+        // 📌 CONFIGURA AQUÍ LA FECHA DE TU SORTEO
+        // Formato: Año, Mes (1=Ene, 12=Dic), Día, Hora, Minuto, Segundo
+        const fechaSorteo = new Date(2026, 11, 30, 18, 0, 0); // Ejemplo: 30 de Diciembre de 2026, 6:00 PM
+
+        function
